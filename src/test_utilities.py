@@ -1,7 +1,8 @@
 import unittest
+import textwrap
 
 from textnode import TextNode, TextType
-from utilities import split_nodes_delimiter, split_image_nodes, split_link_nodes, text_to_textnodes
+from utilities import split_nodes_delimiter, split_image_nodes, split_link_nodes, text_to_textnodes, markdown_to_blocks
 
 class TestUtilities(unittest.TestCase):
     def test_no_nodes(self):
@@ -168,3 +169,42 @@ class TestUtilities(unittest.TestCase):
         self.assertEqual(result[9].text, "link")
         self.assertEqual(result[9].url, "https://boot.dev")
         self.assertEqual(result[9].text_type, TextType.LINK)
+
+    def test_markdown_to_blocks_simple(self):
+        md = """
+            ## This is a header
+            """
+        result = markdown_to_blocks(md)
+        self.assertEqual(len(result), 1)
+        self.assertEqual(
+                result,
+                [
+                    "## This is a header",
+                ],
+            )
+
+    def test_md_to_blocks_1(self):
+        md = textwrap.dedent("""
+            # Header 1
+
+            Paragraph of text. It has some **bolded** and _italic_ text.
+
+            `This is some code`
+
+            ![alt image](my_img.jpeg)
+
+            [link text](www.voylento.com)
+
+            - List item 1
+            - List item 2
+            - List item 3
+            """)
+
+        result = markdown_to_blocks(md)
+        self.assertEqual(len(result), 6)
+        self.assertEqual(result[0], "# Header 1")
+        self.assertEqual(result[1], "Paragraph of text. It has some **bolded** and _italic_ text.")
+        self.assertEqual(result[2], "`This is some code`")
+        self.assertEqual(result[3], "![alt image](my_img.jpeg)")
+        self.assertEqual(result[4], "[link text](www.voylento.com)")
+        self.assertEqual(result[5], "- List item 1\n- List item 2\n- List item 3")
