@@ -1,43 +1,22 @@
+# Make sure project root is in the Python path
+import sys
+import os
+
 from src.blocktype import BlockType, BlockNode, block_to_block_type
+from src.textnode import TextType, TextNode
+from src.htmlnode import HtmlNode, ParentNode, LeafNode
+from src.utilities import split_nodes_delimiter, markdown_to_blocks, text_node_to_html_node
 btbt = block_to_block_type
-heading1_str = "# This is a markdown heading 1"
-heading2_str = "## This is a markdown heading 2"
-heading3_str = "### This is a markdown heading 3"
-heading4_str = "#### This is a markdown heading 4"
-heading5_str = "##### This is a markdown heading 5"
-heading6_str = "###### This is a markdown heading 6"
-heading7_str = "####### This is an invalid markdown heading"
+mdb = markdown_to_blocks
+tnhn = text_node_to_html_node
 
-code_str_single_line = "```my_str = 'This is a string'```"
-code_str_multi_line = """
-```
-class MyClass:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
 
-    def do_something(self):
-        return x + y
-```
-""".strip()
+md_text_1 = """
+This is a **bolded** paragraph
+Test in a p
+tag here
 
-unordered_list = """
-- item 1
-- item 2
-- item 3
-- item 4
-- item 5
-""".strip()
+This is another paragraph with _italic_text and `code`
+"""
 
-ordered_list = """
-1. item 1
-2. item 2
-3. item 3
-4. item 4
-5. item 5
-6. item 6
-7. item 7
-8. item 8
-9. item 9
-10. item 10
-""".strip()
+blocks = markdown_to_blocks(md_text_1)

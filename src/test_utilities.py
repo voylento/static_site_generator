@@ -2,7 +2,7 @@ import unittest
 import textwrap
 
 from textnode import TextNode, TextType
-from utilities import split_nodes_delimiter, split_image_nodes, split_link_nodes, text_to_textnodes, markdown_to_blocks
+from utilities import split_nodes_delimiter, split_image_nodes, split_link_nodes,  markdown_to_blocks
 
 class TestUtilities(unittest.TestCase):
     def test_no_nodes(self):

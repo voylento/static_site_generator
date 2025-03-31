@@ -21,9 +21,6 @@ class BlockNode:
         self.block_type = block_type
 
 def block_to_block_type(text):
-    if re.search(heading_regex, text):
-        return BlockType.HEADING
-
     lines = text.split("\n")
     if len(lines) == 1:
         if re.search(heading_regex, text):

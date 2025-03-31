@@ -1,7 +1,7 @@
 import unittest
 
 from textnode import TextNode, TextType
-from main import text_node_to_html_node
+from utilities import text_node_to_html_node
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
@@ -12,6 +12,12 @@ class TestTextNode(unittest.TestCase):
     def test_url_eq(self):
         node = TextNode("Image with URL", TextType.IMAGE, "https://example.com/image.jpg")
         node2 = TextNode("Image with URL", TextType.IMAGE, "https://example.com/image.jpg")
+        self.assertEqual(node, node2)
+
+    def test_url_not_eq(self):
+        node = TextNode("Living on the severed floor", TextType.IMAGE, "https://example.com")
+        node2 = TextNode("Living on the severed floort", TextType.IMAGE, "https://example.net")
+        self.assertNotEqual(node, node2)
 
     def test_text_not_eq(self):
         node = TextNode("I am a little teapot", TextType.BOLD)
@@ -21,11 +27,6 @@ class TestTextNode(unittest.TestCase):
     def test_type_not_eq(self):
         node = TextNode("Testity test test", TextType.ITALIC)
         node2 = TextNode("Testity test test", TextType.BOLD)
-        self.assertNotEqual(node, node2)
-
-    def test_url_not_eq(self):
-        node = TextNode("Living on the severed floor", TextType.IMAGE, "https://example.com")
-        node2 = TextNode("Living on the severed floort", TextType.IMAGE, "https://example.net")
         self.assertNotEqual(node, node2)
 
     def test_image_node_to_html(self):
@@ -47,7 +48,7 @@ class TestTextNode(unittest.TestCase):
 
         self.assertEqual(actual_html, expected_html)
 
-    def text_bold_node_to_html(self):
+    def test_bold_node_to_html(self):
         node = TextNode("I am bold text", TextType.BOLD)
         html_node = text_node_to_html_node(node)
         expected_html = (
@@ -57,17 +58,18 @@ class TestTextNode(unittest.TestCase):
 
         self.assertEqual(actual_html, expected_html)
 
-    def text_italic_node_to_html(self):
+    def test_italic_node_to_html(self):
         node = TextNode("I am italic text", TextType.ITALIC)
         html_node = text_node_to_html_node(node)
         expected_html = (
-            '<b>I am italic text</b>'
+            '<i>I am italic text</i>'
             )
         actual_html = html_node.to_html()
+        print(f"{actual_html}")
 
         self.assertEqual(actual_html, expected_html)
 
-    def text_code_node_to_html(self):
+    def test_code_node_to_html(self):
         node = TextNode("I am a code element", TextType.CODE)
         html_node = text_node_to_html_node(node)
         expected_html = (
@@ -77,7 +79,7 @@ class TestTextNode(unittest.TestCase):
 
         self.assertEqual(actual_html, expected_html)
 
-    def text_link_node_to_html(self):
+    def test_link_node_to_html(self):
         node = TextNode("I am an anchor tag", TextType.LINK, "https://www.google.com")
         html_node = text_node_to_html_node(node)
         expected_html = (
