@@ -1,6 +1,13 @@
 import unittest
 
-from blocktype import BlockType, block_to_block_type
+from src.blocks import (
+        BlockType, 
+    )
+
+from src.converters import (
+        block_to_block_type,
+    )
+
 btbt = block_to_block_type
 
 heading1_str = "# This is a markdown heading 1"

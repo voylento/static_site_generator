@@ -1,8 +1,17 @@
 import unittest
 import textwrap
 
-from textnode import TextNode, TextType
-from utilities import split_nodes_delimiter, split_image_nodes, split_link_nodes,  markdown_to_blocks
+from src.textnode import (
+        TextNode, 
+        TextType
+    )
+from src.converters import (
+        split_nodes_delimiter, 
+        split_image_nodes, 
+        split_link_nodes,  
+        markdown_to_blocks,
+        extract_title,
+    )
 
 class TestUtilities(unittest.TestCase):
     def test_no_nodes(self):
@@ -208,3 +217,40 @@ class TestUtilities(unittest.TestCase):
         self.assertEqual(result[3], "![alt image](my_img.jpeg)")
         self.assertEqual(result[4], "[link text](www.voylento.com)")
         self.assertEqual(result[5], "- List item 1\n- List item 2\n- List item 3")
+
+    def test_extract_title(self):
+        md = textwrap.dedent("""
+            # This is the title
+
+            Paragraph of text
+            """)
+
+        title = extract_title(md)
+        self.assertEqual("This is the title", title)
+
+    def test_extract_title_no_space(self):
+        md = textwrap.dedent("""
+            #This is the title
+            ##This is not a title
+            ## Th is not a title either
+
+            Paragraph of text
+            """)
+
+        title = extract_title(md)
+        self.assertEqual("This is the title", title)
+
+    def test_extract_title_no_title(self):
+        md = textwrap.dedent("""
+            ##This is not a title
+            ## This not a title either
+
+            Paragraph of text
+            """)
+        try:
+            title = extract_title(md)
+        except Exception as e:
+            self.assertEqual(str(e), "missing title h1 element")
+            return
+
+        self.assertFalse("Lack of h1 did not cause exception")

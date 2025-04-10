@@ -1,7 +1,13 @@
 import unittest
 
-from textnode import TextNode, TextType
-from utilities import text_node_to_html_node
+from src.textnode import (
+        TextNode, 
+        TextType, 
+    )
+
+from src.converters import (
+        text_node_to_html_node,
+    )
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
@@ -65,7 +71,6 @@ class TestTextNode(unittest.TestCase):
             '<i>I am italic text</i>'
             )
         actual_html = html_node.to_html()
-        print(f"{actual_html}")
 
         self.assertEqual(actual_html, expected_html)
 

@@ -1,6 +1,10 @@
 import unittest
 
-from htmlnode import HtmlNode, LeafNode, ParentNode
+from src.htmlnode import (
+        HtmlNode, 
+        LeafNode, 
+        ParentNode
+    )
 
 class TestHtmlNode(unittest.TestCase):
     def test_value_only(self):
@@ -126,11 +130,7 @@ class TestParentNode(unittest.TestCase):
 
         parent_node = ParentNode(tag, children, props)
 
-        expected_html = (
-            '<div id="parent_node" class="parent_node super_duper">'
-            '<b>Bold text</b>Normal text<i>Italic text</i>Normal text'
-            '</div>'
-            )
+        expected_html = r"""<div id="parent_node" class="parent_node super_duper"><b>Bold text</b>Normal text<i>Italic text</i>Normal text</div>"""
 
         parent_node_html = parent_node.to_html()
 
