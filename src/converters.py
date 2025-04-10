@@ -345,7 +345,7 @@ def save_generated_html(html, file_path):
     with open(path, 'w', encoding='utf-8') as f:
         f.write(html)
 
-def generate_page(from_path, template):
+def generate_page(base_path, from_path, template):
     print(f"generate page from {from_path} using {template}")
 
     with open(from_path, 'r') as md_file:
@@ -359,20 +359,22 @@ def generate_page(from_path, template):
     title = extract_title(markdown)
     templ = templ.replace("{{ Title }}", title)
     templ = templ.replace("{{ Content }}", html)
+    templ = templ.replace('href="/', f'href="{base_path}')
+    templ = templ.replace('src="/', f'src="{base_path}')
 
     return templ
 
-def generate_pages(content_path, template_path, dest_path):
+def generate_pages(base_path, content_path, template_path, dest_path):
     content_path, dest_path = Path(content_path), Path(dest_path)
 
     for entry in content_path.iterdir():
         if entry.is_dir():
             new_sub_path = dest_path.joinpath(entry.name)
             new_sub_path.mkdir(exist_ok=True)
-            generate_pages(entry, template_path, new_sub_path)
+            generate_pages(base_path, entry, template_path, new_sub_path)
         else:
             dest_filename = entry.name.replace(".md", ".html")
             dest_path_copy = dest_path
-            html = generate_page(entry, template_path)
+            html = generate_page(base_path, entry, template_path)
             save_generated_html(html, dest_path_copy.joinpath(dest_filename))
 

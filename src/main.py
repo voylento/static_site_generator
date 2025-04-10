@@ -11,21 +11,18 @@ from src.build import (
         generate_html_files,
     )
 
-def copy_static_content(static_path, dest_path):
+def main(base_path):
     static_path = "./static"
-    dest_path = "./public"
-
-    create_public(static_path, dest_path)
-
-def main():
-    static_path= "./static"
     content_path = "./content"
-    build_path = "./public"
+    build_path = "./docs"
     template_file = "./template.html"
+
+    if not base_path:
+        base_path = "/"
 
     create_build_path(build_path)
     copy_static_files(static_path, build_path)
-    generate_html_files(content_path, template_file, build_path)
+    generate_html_files(base_path, content_path, template_file, build_path)
 
 if __name__=="__main__":
-    main()
+    main(sys.argv[1])

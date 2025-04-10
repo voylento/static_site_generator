@@ -37,8 +37,8 @@ def copy_static_files(source_dir, dest_dir):
             dest_dir_copy.joinpath(entry.name)
             shutil.copy(entry, dest_dir_copy)
 
-def generate_html_files(content_path, template, dest_path):
-    generate_pages(content_path, template, dest_path)
+def generate_html_files(base_path, content_path, template, dest_path):
+    generate_pages(base_path, content_path, template, dest_path)
 
     
 
